@@ -14,7 +14,7 @@ accelerate launch LaMed/src/train/train_CLIP.py \
     --per_device_train_batch_size 32 \
     --per_device_eval_batch_size 4 \
     --gradient_accumulation_steps 1 \
-    --evaluation_strategy "steps" \
+    --eval_strategy "steps" \
     --eval_accumulation_steps 1 \
     --eval_steps 0.04 \
     --save_strategy "steps" \

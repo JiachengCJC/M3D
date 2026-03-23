@@ -106,7 +106,7 @@ class TrainingArguments(transformers.TrainingArguments):
     per_device_train_batch_size: int = 1
     per_device_eval_batch_size: int = 1
     gradient_accumulation_steps: int = 1
-    evaluation_strategy: str = "steps"
+    eval_strategy: str = "steps"
     eval_accumulation_steps: int = 1
     eval_steps: float = 0.04
     save_strategy: str = "steps"
