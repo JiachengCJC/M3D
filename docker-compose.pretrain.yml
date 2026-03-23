@@ -1,0 +1,29 @@
+services:
+  m3d-pretrain: # name of the service
+    build:
+      context: .
+      dockerfile: Dockerfile # path to the Dockerfile
+    image: m3d-pretrain:cu118 # m3d-pretrain = image name, cu118 = tag (indicates CUDA 11.8 version)
+    working_dir: /workspace/M3D # default working directory inside the container.
+    shm_size: "16gb"
+    ulimits: # sets Linux resource limits inside the container.
+      memlock: -1 # unlimited memory locking
+      stack: 67108864 # stack size limit (64MB)
+    gpus: all
+    environment: # environment variables to be passed to the container
+      MODEL_NAME_OR_PATH: /models/phi-3-mini-128k-instruct
+      PRETRAIN_VISION_MODEL: /workspace/M3D/pretrained_ViT.bin
+      OUTPUT_DIR: /workspace/M3D/LaMed/output/LaMed-Phi3-4B-pretrain-0000
+      ACCELERATE_CONFIG: /workspace/M3D/docker/accelerate/single_gpu.yaml
+      NUM_TRAIN_EPOCHS: "1"
+      PER_DEVICE_TRAIN_BATCH_SIZE: "1"
+      PER_DEVICE_EVAL_BATCH_SIZE: "1"
+      GRADIENT_ACCUMULATION_STEPS: "1"
+      DATALOADER_NUM_WORKERS: "1"
+      LEARNING_RATE: "1e-4"
+      HF_HOME: /workspace/M3D/.cache/huggingface
+      TRANSFORMERS_CACHE: /workspace/M3D/.cache/huggingface
+    volumes:
+      - ./:/workspace/M3D
+      - /Users/jiacheng/Documents/Models/phi-3-mini-128k-instruct:/models/phi-3-mini-128k-instruct:ro # :ro = read-only
+    command: ["/bin/bash", "/workspace/M3D/docker/pretrain_phi3_docker.sh"]

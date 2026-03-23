@@ -1,0 +1,15 @@
+.git
+.gitignore
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+**/.DS_Store
+Data/data/
+LaMed/output/
+.cache/
+*.bin
+*.pt
+*.pth
+*.safetensors
+*.ckpt
