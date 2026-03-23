@@ -1,0 +1,2 @@
+Image Path,Question,Choice A,Choice B,Choice C,Choice D,Answer Choice,Answer,Question Type
+M3D_Cap_npy/images/cap_case_001.npy,What modality does this synthetic data mimic?,CT,MRI,PET,ultrasound,A,CT-like synthetic volume,3

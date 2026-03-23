@@ -1,0 +1,96 @@
+{
+  "train": [
+    {
+      "image": "M3D_Cap_npy/images/cap_case_000.npy",
+      "text": "M3D_Cap_npy/texts/cap_case_000.txt"
+    },
+    {
+      "image": "M3D_Cap_npy/images/cap_case_001.npy",
+      "text": "M3D_Cap_npy/texts/cap_case_001.txt"
+    }
+  ],
+  "validation": [
+    {
+      "image": "M3D_Cap_npy/images/cap_case_000.npy",
+      "text": "M3D_Cap_npy/texts/cap_case_002.txt"
+    }
+  ],
+  "test": [
+    {
+      "image": "M3D_Cap_npy/images/cap_case_001.npy",
+      "text": "M3D_Cap_npy/texts/cap_case_003.txt"
+    }
+  ],
+  "hard_test": [
+    {
+      "image": "M3D_Cap_npy/images/cap_case_000.npy",
+      "text": "M3D_Cap_npy/texts/cap_case_000.txt"
+    },
+    {
+      "image": "M3D_Cap_npy/images/cap_case_001.npy",
+      "text": "M3D_Cap_npy/texts/cap_case_001.txt"
+    },
+    {
+      "image": "M3D_Cap_npy/images/cap_case_000.npy",
+      "text": "M3D_Cap_npy/texts/cap_case_002.txt"
+    },
+    {
+      "image": "M3D_Cap_npy/images/cap_case_001.npy",
+      "text": "M3D_Cap_npy/texts/cap_case_003.txt"
+    }
+  ],
+  "test1k": [
+    {
+      "image": "M3D_Cap_npy/images/cap_case_000.npy",
+      "text": "M3D_Cap_npy/texts/cap_case_000.txt"
+    },
+    {
+      "image": "M3D_Cap_npy/images/cap_case_001.npy",
+      "text": "M3D_Cap_npy/texts/cap_case_001.txt"
+    },
+    {
+      "image": "M3D_Cap_npy/images/cap_case_000.npy",
+      "text": "M3D_Cap_npy/texts/cap_case_002.txt"
+    },
+    {
+      "image": "M3D_Cap_npy/images/cap_case_001.npy",
+      "text": "M3D_Cap_npy/texts/cap_case_003.txt"
+    }
+  ],
+  "test500": [
+    {
+      "image": "M3D_Cap_npy/images/cap_case_000.npy",
+      "text": "M3D_Cap_npy/texts/cap_case_000.txt"
+    },
+    {
+      "image": "M3D_Cap_npy/images/cap_case_001.npy",
+      "text": "M3D_Cap_npy/texts/cap_case_001.txt"
+    },
+    {
+      "image": "M3D_Cap_npy/images/cap_case_000.npy",
+      "text": "M3D_Cap_npy/texts/cap_case_002.txt"
+    },
+    {
+      "image": "M3D_Cap_npy/images/cap_case_001.npy",
+      "text": "M3D_Cap_npy/texts/cap_case_003.txt"
+    }
+  ],
+  "test100": [
+    {
+      "image": "M3D_Cap_npy/images/cap_case_000.npy",
+      "text": "M3D_Cap_npy/texts/cap_case_000.txt"
+    },
+    {
+      "image": "M3D_Cap_npy/images/cap_case_001.npy",
+      "text": "M3D_Cap_npy/texts/cap_case_001.txt"
+    },
+    {
+      "image": "M3D_Cap_npy/images/cap_case_000.npy",
+      "text": "M3D_Cap_npy/texts/cap_case_002.txt"
+    },
+    {
+      "image": "M3D_Cap_npy/images/cap_case_001.npy",
+      "text": "M3D_Cap_npy/texts/cap_case_003.txt"
+    }
+  ]
+}

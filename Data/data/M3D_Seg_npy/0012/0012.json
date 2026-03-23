@@ -1,0 +1,26 @@
+{
+  "name": "fake_m3d_0012",
+  "description": "Tiny fake segmentation set for smoke tests.",
+  "labels": {
+    "0": "background",
+    "1": "liver"
+  },
+  "train": [
+    {
+      "image": "shared/images/shared_case.npy",
+      "label": "shared/labels/shared_0.npy"
+    }
+  ],
+  "training": [
+    {
+      "image": "shared/images/shared_case.npy",
+      "label": "shared/labels/shared_0.npy"
+    }
+  ],
+  "test": [
+    {
+      "image": "shared/images/shared_case.npy",
+      "label": "shared/labels/shared_0.npy"
+    }
+  ]
+}

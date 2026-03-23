@@ -1,0 +1,3 @@
+Image Path,Question,Choice A,Choice B,Choice C,Choice D,Answer Choice,Answer,Question Type
+M3D_Cap_npy/images/cap_case_000.npy,Which organ is highlighted most clearly?,liver,lung,brain,heart,A,liver,0
+M3D_Cap_npy/images/cap_case_001.npy,Is there a focal lesion visible?,yes,no,uncertain,not applicable,B,no,1

@@ -1,0 +1,3 @@
+Image Path,Question,Answer,Answer Choice,Question Type
+M3D_Cap_npy/images/cap_case_000.npy,Is the liver region present in this volume?,yes,A,10
+M3D_Cap_npy/images/cap_case_001.npy,Is there severe motion artifact?,no,B,11

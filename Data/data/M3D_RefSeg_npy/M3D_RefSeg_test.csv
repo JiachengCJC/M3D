@@ -1,0 +1,2 @@
+Image,Mask,Mask_ID,Question,Answer
+M3D_Cap_npy/images/cap_case_000.npy,M3D_RefSeg_npy/masks/ref_case_000.npy,1,Segment the highlighted liver region.,The liver region is segmented as requested.
