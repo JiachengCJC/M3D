@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # run "accelerate config" first!
+export PYTHONPATH=$PYTHONPATH:$(pwd)
 
 accelerate launch LaMed/src/train/train.py \
     --version v0 \
