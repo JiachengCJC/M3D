@@ -1,0 +1,12 @@
+{
+  "transformer_layer_cls_to_wrap": [
+    "Phi3DecoderLayer"
+  ],
+  "backward_prefetch": "backward_pre",
+  "forward_prefetch": false,
+  "limit_all_gathers": true,
+  "activation_checkpointing": true,
+  "use_orig_params": true,
+  "sync_module_states": true,
+  "cpu_ram_efficient_loading": true
+}

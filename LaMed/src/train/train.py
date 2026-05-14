@@ -162,6 +162,12 @@ def get_mm_projector_state_maybe_zero_3(named_params, keys_to_match):
     to_return = {k: maybe_zero_3(v, ignore_status=True).cpu() for k, v in to_return.items()}
     return to_return
 
+def get_state_dict_for_fsdp(trainer: transformers.Trainer):
+    fsdp_plugin = trainer.accelerator.state.fsdp_plugin
+    if hasattr(fsdp_plugin, "set_state_dict_type"):
+        fsdp_plugin.set_state_dict_type("FULL_STATE_DICT")
+    return trainer.accelerator.get_state_dict(trainer.model)
+
 
 def safe_save_model_for_hf_trainer(trainer: transformers.Trainer,
                                    output_dir: str):
@@ -171,12 +177,20 @@ def safe_save_model_for_hf_trainer(trainer: transformers.Trainer,
         # Only save projector and embed_tokens in pretrain
         keys_to_match = ['mm_projector', 'embed_tokens']
 
-        weight_to_save = get_mm_projector_state_maybe_zero_3(trainer.model.named_parameters(), keys_to_match)
+        if getattr(trainer, "is_fsdp_enabled", False):
+            state_dict = get_state_dict_for_fsdp(trainer)
+            weight_to_save = {
+                k: v.cpu()
+                for k, v in state_dict.items()
+                if any(key_match in k for key_match in keys_to_match)
+            }
+        else:
+            weight_to_save = get_mm_projector_state_maybe_zero_3(trainer.model.named_parameters(), keys_to_match)
         trainer.model.config.save_pretrained(output_dir)
 
         current_folder = output_dir.split('/')[-1]
         parent_folder = os.path.dirname(output_dir)
-        if trainer.args.local_rank == 0 or trainer.args.local_rank == -1:
+        if trainer.args.should_save:
             if current_folder.startswith('checkpoint-'):
                 mm_projector_folder = os.path.join(parent_folder, "mm_projector")
                 os.makedirs(mm_projector_folder, exist_ok=True)
@@ -188,6 +202,12 @@ def safe_save_model_for_hf_trainer(trainer: transformers.Trainer,
     if trainer.deepspeed:
         torch.cuda.synchronize()
         trainer.save_model(output_dir)
+        return
+
+    if getattr(trainer, "is_fsdp_enabled", False):
+        state_dict = get_state_dict_for_fsdp(trainer)
+        if trainer.args.should_save:
+            trainer._save(output_dir, state_dict=state_dict)
         return
 
     state_dict = trainer.model.state_dict()
@@ -327,7 +347,14 @@ def main():
 
     model.enable_input_require_grads()
     if training_args.gradient_checkpointing:
-        model.gradient_checkpointing_enable()
+        gradient_ckpt_kwargs = training_args.gradient_checkpointing_kwargs
+        if isinstance(gradient_ckpt_kwargs, str):
+            import json
+            gradient_ckpt_kwargs = json.loads(gradient_ckpt_kwargs)
+        if gradient_ckpt_kwargs is not None:
+            model.gradient_checkpointing_enable(gradient_checkpointing_kwargs=gradient_ckpt_kwargs)
+        else:
+            model.gradient_checkpointing_enable()
 
     # initialize vision and seg modules on LLM
     if model_args.vision_tower is not None:
@@ -404,8 +431,12 @@ def main():
 
     rank0_print("="*20 + " Save model " + "="*20)
     if training_args.lora_enable:
-        state_dict_with_lora = model.state_dict()
-        torch.save(state_dict_with_lora, os.path.join(training_args.output_dir, 'model_with_lora.bin'))
+        if getattr(trainer, "is_fsdp_enabled", False):
+            state_dict_with_lora = get_state_dict_for_fsdp(trainer)
+        else:
+            state_dict_with_lora = model.state_dict()
+        if trainer.args.should_save:
+            torch.save(state_dict_with_lora, os.path.join(training_args.output_dir, 'model_with_lora.bin'))
     else:
         safe_save_model_for_hf_trainer(trainer=trainer, output_dir=training_args.output_dir)
 

@@ -7,6 +7,7 @@ from functools import partial
 from pathlib import Path
 import urllib.request
 import torch
+import inspect
 
 from .modeling import (
     ImageEncoderViT,
@@ -60,8 +61,8 @@ def _build_sam(
     num_heads = 12
     pos_embed = 'perceptron'
     dropout_rate = 0.0
-    
-    image_encoder=ViT(
+
+    vit_kwargs = dict(
         in_channels=1,
         img_size=image_size,
         patch_size=patch_size,
@@ -69,10 +70,20 @@ def _build_sam(
         mlp_dim=mlp_dim,
         num_layers=num_layers,
         num_heads=num_heads,
-        pos_embed=pos_embed,
         classification=False,
         dropout_rate=dropout_rate,
     )
+    vit_params = inspect.signature(ViT.__init__).parameters
+    if "pos_embed" in vit_params:
+        # MONAI <= 1.3
+        vit_kwargs["pos_embed"] = pos_embed
+    elif "proj_type" in vit_params:
+        # MONAI >= 1.4
+        vit_kwargs["proj_type"] = pos_embed
+    if "spatial_dims" in vit_params:
+        vit_kwargs["spatial_dims"] = len(patch_size)
+
+    image_encoder = ViT(**vit_kwargs)
     image_embedding_size = [int(item) for item in (np.array(image_size) / np.array(patch_size))]
 
     if checkpoint is not None:

@@ -93,13 +93,15 @@ class LamedMetaModel:
         if model_args.pretrain_seg_module is not None:
             seg_module_weights = torch.load(model_args.pretrain_seg_module, map_location='cpu')
             new_state_dict = {}
+            target_state_dict = self.seg_module.state_dict()
             for key, value in seg_module_weights.items():
                 if key.startswith('model.text_encoder.') or key.startswith('text_encoder.'):
                     continue
                 if key.startswith('model.'):
                     new_key = key[len('model.'):]
-                    new_state_dict[new_key] = value
-            self.seg_module.load_state_dict(new_state_dict, strict=True)
+                    if new_key in target_state_dict and target_state_dict[new_key].shape == value.shape:
+                        new_state_dict[new_key] = value
+            self.seg_module.load_state_dict(new_state_dict, strict=False)
 
         self.dice_loss = BinaryDiceLoss()
         self.bce_loss = BCELoss()
